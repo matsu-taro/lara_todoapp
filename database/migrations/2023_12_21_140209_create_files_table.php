@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('todos', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('title',100);
-            $table->text('content',1000);
-            $table->string('owner_name')->unique();
-            $table->tinyInteger('status');
-            $table->softDeletes();
+            $table->foreignId('todo_id')->constrained();
+            $table->string('original_file_name');
+            $table->string('path');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('todos');
+        Schema::dropIfExists('files');
     }
 };

@@ -26,36 +26,46 @@
 
   <main class="main">
     <div class="main__title">
-      <div class="main__title">
-        <p>
-          自分のタスク
-        </p>
-      </div>
+      <p>
+        自分のタスク
+      </p>
     </div>
-    <div class="main__body">
-      <div class="main__title-left">
-        <p>
-          タイトル
-        </p>
-      </div>
-      <div class="main__title-right">
-        <p>
-          状態
-        </p>
-        <p>
-          削除
-        </p>
-      </div>
-    </div>
-  </main>
 
-  {{-- <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6 text-gray-900">
-          {{ __("You're logged in!") }}
+    <div class="main__body">
+      <div class="main__bodyTop">
+        <div class="main__body-left">
+          <ul>
+            <li class="main__smallTitle">
+              タイトル
+            </li>
+
+            {{-- @foreach() --}}
+            <li>
+              wwwww
+            </li>
+            {{-- @endforeach --}}
+          </ul>
+        </div>
+        <div class="main__body-right">
+          <ul>
+            <li class="main__smallTitle">
+              ステータス
+            </li>
+            <li>
+              wwwww
+            </li>
+          </ul>
+          <ul>
+            <li class="main__smallTitle">
+              ボタン
+            </li>
+            <li>
+              wwwww
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-  </div> --}}
+
+  </main>
 </x-app-layout>
