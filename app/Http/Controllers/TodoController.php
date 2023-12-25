@@ -3,39 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Todo;
 
 class TodoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $todos = Todo::get();
+
+        return view('todos.index', compact('todos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        //
+        $user = Auth::user();
+        return view('todos.create', compact('user'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        Todo::create([
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'content' => $request->content,
+            'owner_name' => $request->owner_name,
+            'status' => $request->status,
+        ]);
+
+        return to_route('todos.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show()
     {
-        //
+        // $user = Auth::user();
+        $my_todos = Todo::where('user_id', Auth::id())
+            ->get();
+
+        return view('todos.dashboard', compact('my_todos'));
     }
 
     /**
@@ -60,5 +69,10 @@ class TodoController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function dustBox()
+    {
+        return view('todos.dust-box');
     }
 }
