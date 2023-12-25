@@ -48,7 +48,7 @@
           @foreach ($todos as $todo)
             <tr class="border-b-2">
               <td class="px-4 py-3">
-                <a class="text-blue-500" href="">
+                <a class="text-blue-500" href="{{ route('todos.edit',['todo'=>$todo->id]); }}">
                   {{ $todo->title }}
                 </a>
               </td>

@@ -47,12 +47,13 @@ class TodoController extends Controller
         return view('todos.dashboard', compact('my_todos'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(string $id)
     {
-        //
+        $todo = Todo::findOrFail($id);
+        $user = Auth::user();
+
+        return view('todos.edit' ,compact('todo','user'));
     }
 
     /**
