@@ -2,11 +2,11 @@
   <main class="main">
     <div class="main__title">
       <p>
-        新規作成
+        詳細を確認・編集する
       </p>
     </div>
 
-    <form action="{{ route('todos.store') }}" method="post">
+    <form action="{{ route('todos.update',['todo'=>$todo->id]) }}" method="post">
       @csrf
       
       <input type="hidden" name="user_id" value="{{ $user->id }}">

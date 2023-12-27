@@ -28,29 +28,30 @@ class UserSeeder extends Seeder
         'created_at' => '2023/12/22 12:00:00'
       ],
       [
-        'name' => 'まつはし',
+        'name' => 'まつだ',
         'email' => 'a1@a.com',
         'password' =>  Hash::make('ripslyme3080'),
         'created_at' => '2023/12/22 12:00:00'
       ],
       [
-        'name' => 'まつはし',
+        'name' => 'やまだ',
         'email' => 'a2@a.com',
         'password' =>  Hash::make('ripslyme3080'),
         'created_at' => '2023/12/22 12:00:00'
       ],
       [
-        'name' => 'まつはし',
+        'name' => 'たなか',
         'email' => 'a3@a.com',
         'password' =>  Hash::make('ripslyme3080'),
         'created_at' => '2023/12/22 12:00:00'
       ],
       [
-        'name' => 'まつはし',
+        'name' => 'さとう',
         'email' => 'a4@a.com',
         'password' =>  Hash::make('ripslyme3080'),
         'created_at' => '2023/12/22 12:00:00'
       ],
     ]);
+
   }
 }

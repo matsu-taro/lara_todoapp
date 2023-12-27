@@ -31,30 +31,26 @@
       </p>
     </div>
 
-    <div class="flex gap-x-16">
-      <table class="table-auto w-1/5 text-left whitespace-no-wrap border">
+    <div class="flex gap-x-20">
+      <table class="table-auto w-3/5 text-left whitespace-no-wrap border">
         <thead class="border-b-2">
           <tr>
             <th
-              class="font-bold px-4 pl-100 py-6 title-font tracking-wider text-gray-900 text-lg bg-blue-300 rounded-tl rounded-b">
+              class="font-bold px-4 pl-100 py-6 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b">
               担当者でタスクを絞る
             </th>
           </tr>
         </thead>
         <tbody>
-
-          {{-- <form action="{{ route('todos.owner_index',['todo']) }}" method="POST"> --}}
-          {{-- @csrf --}}
-          @foreach ($users as $user)
+          @foreach ($owner_todos as $owner_todo)
             <tr class="border-b-2">
               <td class="px-4 py-3">
-                <a href="{{ route('todos.owner_index', $user->id) }}" class="text-blue-500">
-                  {{ $user->name }}
+                <a href="{{ route('todos.owner_index',$owner_todo->user_id) }}" class="text-blue-500">
+                  {{ $owner_todo->owner_name }}
                 </a>
               </td>
             </tr>
           @endforeach
-          {{-- </form> --}}
         </tbody>
       </table>
 
@@ -64,12 +60,8 @@
             <th
               class="font-bold px-4 pl-100 py-6 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b">
               タスク</th>
-            <th
-              class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b">
-            </th>
-            <th
-              class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b">
-            </th>
+              <th class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b"></th>
+              <th class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b"></th>
           </tr>
         </thead>
         <thead class="border-b-2">
@@ -77,29 +69,29 @@
             <th
               class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100 rounded-tl rounded-b">
               タイトル</th>
-            <th class="font-bold text-right px-4 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100">
-              担当者</th>
+              <th class="font-bold text-right px-4 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100">
+                担当者</th>
             <th class="font-bold text-right px-4 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100">
               ステータス</th>
           </tr>
         </thead>
         <tbody>
-          @foreach ($todos->sortBy('owner_name') as $todo)
+          @foreach ($owner_todos as $owner_todo)
             <tr class="border-b-2">
               <td class="px-4 py-3">
-                <a class="text-blue-500" href="{{ route('todos.edit', ['todo' => $todo->id]) }}">
-                  {{ $todo->title }}
+                <a class="text-blue-500" href="{{ route('todos.edit', ['todo' => $owner_todo->id]) }}">
+                  {{ $owner_todo->title }}
                 </a>
               </td>
               <td class="text-right px-4 py-3">
-                {{ $todo->owner_name }}
+                {{ $owner_todo->owner_name }}
               </td>
               <td class="text-right px-4 py-3">
-                @if ($todo->status === 0)
+                @if ($owner_todo->status === 0)
                   未対応
-                @elseif($todo->status === 1)
+                @elseif($owner_todo->status === 1)
                   対応中
-                @elseif($todo->status === 2)
+                @elseif($owner_todo->status === 2)
                   完了
                 @endif
               </td>

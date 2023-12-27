@@ -20,7 +20,7 @@ class Todo extends Model
     ];
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'owner_name','name');
     }
 
     public function files(){

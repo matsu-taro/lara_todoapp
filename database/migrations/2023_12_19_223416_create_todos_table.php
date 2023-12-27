@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('title',100);
-            $table->text('content',1000);
-            $table->string('owner_name')->unique();
+            $table->foreignId('user_id')
+                ->constrained();
+            $table->string('title', 100);
+            $table->text('content', 1000);
+            $table->string('owner_name');
             $table->tinyInteger('status');
             $table->softDeletes();
             $table->timestamps();

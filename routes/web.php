@@ -15,21 +15,28 @@ use App\Http\Controllers\TodoController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('todos/dashboard', [TodoController::class, 'show'])
+Route::get('dashboard', [TodoController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('todos.dashboard');
 
 Route::resource('todos', TodoController::class);
-Route::get('todos/dust-box', [TodoController::class, 'dustBox'])
-    ->name('todos.dust-box');
+
+Route::prefix('todos')
+    ->group(function () {
+        Route::get('{todo}/owner_index', [TodoController::class, 'ownerIndex'])
+            ->name('todos.owner_index');
+        Route::get('dust-box', [TodoController::class, 'dustBox'])
+            ->name('todos.dust-box');
+    });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
