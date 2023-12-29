@@ -47,10 +47,29 @@
         <tbody>
           @foreach ($my_todos as $my_todo)
             <tr class="border-b-2">
-              <td class="px-4 py-3">{{ $my_todo->title }}</td>
-              <td class="text-right px-4 py-3">@if($my_todo->status === 0)未対応 @elseif($my_todo->status === 1) 対応中 @elseif($my_todo->status === 2)完了 @endif</td>
-              <td class="text-right px-4 py-3 text-gray-900"><a class="text-blue-500"
-                  href="{{ route('todos.dust-box') }}">削除する</a></td>
+              <td class="px-4 py-3">
+                <a href="{{ route('todos.edit', ['todo' => $my_todo->id]) }}" class="text-blue-500">
+                  {{ $my_todo->title }}
+                </a>
+              </td>
+              <td class="text-right px-4 py-3">
+                @if ($my_todo->status === 0)
+                  未対応
+                @elseif($my_todo->status === 1)
+                  対応中
+                @elseif($my_todo->status === 2)
+                  完了
+                @endif
+              </td>
+              <td class="text-right px-4 py-3 text-gray-900">
+                <form action="{{ route('todos.destroy', ['todo' => $my_todo->id]) }}" method="POST">
+                  @csrf
+                  @method('delete')
+                  <button class="text-blue-500">
+                    削除する
+                  </button>
+                </form>
+              </td>
             </tr>
           @endforeach
         </tbody>

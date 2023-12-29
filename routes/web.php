@@ -22,19 +22,19 @@ Route::get('/', function () {
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('dashboard', [TodoController::class, 'show'])
-    ->middleware(['auth', 'verified'])
-    ->name('todos.dashboard');
-
-Route::resource('todos', TodoController::class);
+Route::resource('todos', TodoController::class)
+    ->except('show');
 
 Route::prefix('todos')
+    ->controller(TodoController::class)
+    ->name('todos.')
     ->group(function () {
-        Route::get('{todo}/owner_index', [TodoController::class, 'ownerIndex'])
-            ->name('todos.owner_index');
-        Route::get('dust-box', [TodoController::class, 'dustBox'])
-            ->name('todos.dust-box');
+        Route::get('/dashboard', 'dashBoard')
+            ->name('dashboard');
+        Route::get('/{todo}/owner_index', 'ownerIndex')
+            ->name('owner_index');
+        Route::get('/dust-box', 'dustBox')
+            ->name('dust-box');
     });
 
 

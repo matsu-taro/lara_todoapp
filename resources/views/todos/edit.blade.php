@@ -6,10 +6,11 @@
       </p>
     </div>
 
-    <form action="{{ route('todos.update',['todo'=>$todo->id]) }}" method="post">
+    <form action="{{ route('todos.update',['todo'=>$todo->id]) }}" method="POST">
       @csrf
+      @method('put')
       
-      <input type="hidden" name="user_id" value="{{ $user->id }}">
+      {{-- <input type="hidden" name="user_id" value="{{ $user->id }}"> --}}
 
       <div class="todo--title">
         <input type="text" name="title" placeholder="タイトル" value="{{ $todo->title }}" style="border-radius: 4px; border:4px solid antiquewhite;">
@@ -19,10 +20,15 @@
       </div>
 
       <div class="todo--owner_name">
-        <input type="text" name="owner_name" placeholder="担当者名" value="{{ $todo->owner_name }}" class="w-1/6" style="border-radius: 4px; border:4px solid antiquewhite;">
+        <label for="owner_name" class="leading-7 text-md text-black-600">担当者</label><br>
+        <select name="owner_name" class="w-1/6">
+          @foreach ($users as $user)
+            <option value="{{ $user->name }}" @if($todo->user_id == $user->id) selected @endif>{{ $user->name }}</option>
+          @endforeach
+        </select>
       </div>
 
-      <div class="todo--status">
+      <div class="todo--status mt-6">
         <select name="status" class="w-1/6">
           <option value="0" @if($todo->status === 0) selected @endif>未対応</option>
           <option value="1" @if($todo->status === 1) selected @endif>対応中</option>
@@ -30,9 +36,9 @@
         </select>
       </div>
 
-      <div class="w-1/6">
+      <div class="w-1/6 mt-6">
         <div class="relative">
-          <input type="file" name="files[]" multiple accept="image/png,image/jpeg,image/jpg"
+          <input type="file" name="files[]" multiple accept=".png,.jpeg,.jpg,.pdf,.xlsx,.docx,.txt"
             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-green-500 focus:bg-white focus:ring-2 focus:ring-green-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         </div>
       </div>

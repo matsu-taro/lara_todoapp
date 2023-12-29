@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Todo;
+use App\Models\File;
 use App\Models\User;
 
 class TodoController extends Controller
@@ -12,18 +13,18 @@ class TodoController extends Controller
 
   public function index()
   {
-    $todos = Todo::get();
+    $todos = Todo::paginate(10);
     $users = User::all();
 
-    return view('todos.index', compact('todos','users'));
+    return view('todos.index', compact('todos', 'users'));
   }
 
   public function ownerIndex(string $id)
   {
-    $owner_todos = Todo::findOrFail($id)->get();
-    $memos = Todo::where('id', $id)->orderBy('updated_at', 'desc');
+    $users = User::all();
+    $owner_todos = Todo::where('user_id', $id)->get();
 
-    return view('todos.owner_index', compact('owner_todos'));
+    return view('todos.owner_index', compact('users', 'owner_todos'));
   }
 
 
@@ -47,20 +48,19 @@ class TodoController extends Controller
         'password' => 'password'
       ]);
 
-      Todo::create([
+      $todo = Todo::create([
         'user_id' => $user->id,
         'title' => $request->title,
         'content' => $request->content,
         'owner_name' => $newOwnerName,
         'status' => $request->status,
       ]);
-
     } elseif ($newOwnerName == null && $selectedOwnerName !== 0) {
-      
+
       $user = User::where('name', $selectedOwnerName)->first();
 
       if ($user) {
-        Todo::create([
+        $todo = Todo::create([
           'user_id' => $user->id,
           'title' => $request->title,
           'content' => $request->content,
@@ -70,11 +70,29 @@ class TodoController extends Controller
       }
     };
 
+    if ($request->hasFile('files')) {
+      $files = $request->file('files');
+
+      foreach ($files as $file) {
+        $randFileName = uniqid();
+        $extension = $file->getClientOriginalExtension(); //拡張子を抽出
+        $originalFileName = $randFileName . '.' . $extension;
+
+        $path = $file->storeAs('public/' . $originalFileName);
+
+        File::create([
+          'todo_id' => $todo->id,
+          'original_file_name' => $originalFileName,
+          'path' => $path,
+        ]);
+      };
+    };
+
     return to_route('todos.index');
   }
 
 
-  public function show()
+  public function dashBoard()
   {
     $my_todos = Todo::where('user_id', Auth::id())
       ->get();
@@ -86,12 +104,12 @@ class TodoController extends Controller
   public function edit(string $id)
   {
     $todo = Todo::findOrFail($id);
-    $user = Auth::user();
+    $users = User::all();
 
-    return view('todos.edit', compact('todo', 'user'));
+    return view('todos.edit', compact('todo', 'users'));
   }
 
- 
+
   public function update(Request $request, string $id)
   {
     $update = Todo::find($id);
@@ -111,11 +129,16 @@ class TodoController extends Controller
    */
   public function destroy(string $id)
   {
-    //
+    Todo::findOrFail($id)
+      ->delete();
+
+    return to_route('todos.dashboard');
   }
 
   public function dustBox()
   {
-    return view('todos.dust-box');
+    $deletedTodos = Todo::onlyTrashed()->get();
+
+    return view('todos.dust-box', compact('deletedTodos'));
   }
 }
