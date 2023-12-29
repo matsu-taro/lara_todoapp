@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreRequest;
 use App\Models\Todo;
 use App\Models\File;
 use App\Models\User;
@@ -36,7 +37,7 @@ class TodoController extends Controller
   }
 
 
-  public function store(Request $request)
+  public function store(StoreRequest $request)
   {
     $newOwnerName = $request->new_owner_name;
     $selectedOwnerName = $request->owner_name;
@@ -110,7 +111,7 @@ class TodoController extends Controller
   }
 
 
-  public function update(Request $request, string $id)
+  public function update(StoreRequest $request, string $id)
   {
     $update = Todo::find($id);
 
