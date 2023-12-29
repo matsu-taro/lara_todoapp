@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TodoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::resource('todos', TodoController::class)
+    ->except('show');
+
+Route::prefix('todos')
+    ->controller(TodoController::class)
+    ->name('todos.')
+    ->group(function () {
+        Route::get('/dashboard', 'dashBoard')
+            ->name('dashboard');
+        Route::get('/{todo}/owner_index', 'ownerIndex')
+            ->name('owner_index');
+        Route::get('/dust-box', 'dustBox')
+            ->name('dust-box');
+    });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,4 +44,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
