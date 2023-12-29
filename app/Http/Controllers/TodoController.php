@@ -22,7 +22,7 @@ class TodoController extends Controller
   public function ownerIndex(string $id)
   {
     $users = User::all();
-    $owner_todos = Todo::where('user_id', $id)->get();
+    $owner_todos = Todo::where('user_id', $id)->paginate(10);
 
     return view('todos.owner_index', compact('users', 'owner_todos'));
   }
@@ -95,7 +95,7 @@ class TodoController extends Controller
   public function dashBoard()
   {
     $my_todos = Todo::where('user_id', Auth::id())
-      ->get();
+      ->paginate(10);
 
     return view('todos.dashboard', compact('my_todos'));
   }

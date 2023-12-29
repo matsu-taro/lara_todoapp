@@ -54,51 +54,60 @@
         </tbody>
       </table>
 
-      <table class="table-auto text-left whitespace-no-wrap border block">
-        <thead class="border-b-2">
-          <tr>
-            <th
-              class="font-bold px-4 pl-100 py-6 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b">
-              タスク</th>
-              <th class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b"></th>
-              <th class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b"></th>
-          </tr>
-        </thead>
-        <thead class="border-b-2">
-          <tr>
-            <th
-              class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100 rounded-tl rounded-b">
-              タイトル</th>
+      <div>
+        <table class="table-auto text-left whitespace-no-wrap border block">
+          <thead class="border-b-2">
+            <tr>
+              <th
+                class="font-bold px-4 pl-100 py-6 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b">
+                タスク</th>
+              <th
+                class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b">
+              </th>
+              <th
+                class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-lg bg-gray-100 rounded-tl rounded-b">
+              </th>
+            </tr>
+          </thead>
+          <thead class="border-b-2">
+            <tr>
+              <th
+                class="font-bold px-4 pl-100 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100 rounded-tl rounded-b">
+                タイトル</th>
               <th class="font-bold text-right px-4 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100">
                 担当者</th>
-            <th class="font-bold text-right px-4 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100">
-              ステータス</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($owner_todos as $owner_todo)
-            <tr class="border-b-2">
-              <td class="px-4 py-3">
-                <a class="text-blue-500" href="{{ route('todos.edit', ['todo' => $owner_todo->id]) }}">
-                  {{ $owner_todo->title }}
-                </a>
-              </td>
-              <td class="text-right px-4 py-3">
-                {{ $owner_todo->owner_name }}
-              </td>
-              <td class="text-right px-4 py-3">
-                @if ($owner_todo->status === 0)
-                  未対応
-                @elseif($owner_todo->status === 1)
-                  対応中
-                @elseif($owner_todo->status === 2)
-                  完了
-                @endif
-              </td>
+              <th class="font-bold text-right px-4 py-3 title-font tracking-wider text-gray-900 text-md bg-gray-100">
+                ステータス</th>
             </tr>
-          @endforeach
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @foreach ($owner_todos as $owner_todo)
+              <tr class="border-b-2">
+                <td class="px-4 py-3">
+                  <a class="text-blue-500" href="{{ route('todos.edit', ['todo' => $owner_todo->id]) }}">
+                    {{ $owner_todo->title }}
+                  </a>
+                </td>
+                <td class="text-right px-4 py-3">
+                  {{ $owner_todo->owner_name }}
+                </td>
+                <td class="text-right px-4 py-3">
+                  @if ($owner_todo->status === 0)
+                    未対応
+                  @elseif($owner_todo->status === 1)
+                    対応中
+                  @elseif($owner_todo->status === 2)
+                    完了
+                  @endif
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+        <div class="pagination">
+          {{ $owner_todos->links() }}
+        </div>
+      </div>
     </div>
   </main>
 </x-app-layout>

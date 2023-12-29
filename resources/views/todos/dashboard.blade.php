@@ -74,6 +74,9 @@
           @endforeach
         </tbody>
       </table>
+      <div class="pagination">
+        {{ $my_todos->links() }}
+      </div>
     </div>
   </main>
 </x-app-layout>
