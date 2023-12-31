@@ -48,12 +48,10 @@
           @foreach ($deletedTodos as $deletedTodo)
             <tr class="border-b-2">
               <td class="px-4 py-3">
-                <a href="{{ route('todos.edit', ['todo' => $deletedTodo->id]) }}" class="text-blue-500">
-                  {{ $deletedTodo->title }}
-                </a>
+                {{ $deletedTodo->title }}
               </td>
               <td class="text-right px-4 py-3">
-                <a class="text-blue-500" href="">
+                <a class="text-blue-500" href="{{ route('todos.restore', ['todo' => $deletedTodo->id]) }}">
                   復元する
                 </a>
                 {{-- @if ($deletedTodo->status === 0)
@@ -65,9 +63,12 @@
                 @endif --}}
               </td>
               <td class="text-right px-4 py-3 text-gray-900">
-                <a class="text-red-500" href="{{ route('todos.dust-box') }}">
-                  完全に削除
-                </a>
+                <form action="{{ route('todos.dust-box-clear', ['todo' => $deletedTodo->id]) }}" method="POST">
+                  @csrf
+                  <button class="text-red-500">
+                    完全削除
+                  </button>
+                </form>
               </td>
             </tr>
           @endforeach

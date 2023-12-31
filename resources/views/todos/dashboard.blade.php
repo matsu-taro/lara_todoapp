@@ -65,7 +65,7 @@
                 <form action="{{ route('todos.destroy', ['todo' => $my_todo->id]) }}" method="POST">
                   @csrf
                   @method('delete')
-                  <button class="text-blue-500">
+                  <button class="text-red-500">
                     削除する
                   </button>
                 </form>

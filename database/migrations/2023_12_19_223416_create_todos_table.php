@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
-                ->constrained();
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('title', 100);
             $table->text('content', 1000);
             $table->string('owner_name');
