@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreRequest;
 use App\Models\Todo;
 use App\Models\File;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class TodoController extends Controller
 {
@@ -22,7 +24,7 @@ class TodoController extends Controller
   public function ownerIndex(string $id)
   {
     $users = User::all();
-    $owner_todos = Todo::where('user_id', $id)->get();
+    $owner_todos = Todo::where('user_id', $id)->paginate(10);
 
     return view('todos.owner_index', compact('users', 'owner_todos'));
   }
@@ -36,7 +38,7 @@ class TodoController extends Controller
   }
 
 
-  public function store(Request $request)
+  public function store(StoreRequest $request)
   {
     $newOwnerName = $request->new_owner_name;
     $selectedOwnerName = $request->owner_name;
@@ -95,7 +97,7 @@ class TodoController extends Controller
   public function dashBoard()
   {
     $my_todos = Todo::where('user_id', Auth::id())
-      ->get();
+      ->paginate(10);
 
     return view('todos.dashboard', compact('my_todos'));
   }
@@ -106,11 +108,13 @@ class TodoController extends Controller
     $todo = Todo::findOrFail($id);
     $users = User::all();
 
-    return view('todos.edit', compact('todo', 'users'));
+    $files_name = $todo->files()->pluck('original_file_name');
+
+    return view('todos.edit', compact('todo', 'users', 'files_name'));
   }
 
 
-  public function update(Request $request, string $id)
+  public function update(StoreRequest $request, string $id)
   {
     $update = Todo::find($id);
 
@@ -119,14 +123,30 @@ class TodoController extends Controller
     $update->owner_name = $request->owner_name;
     $update->status = $request->status;
 
+    if ($request->hasFile('files')) {
+      $files = $request->file('files');
+
+      foreach ($files as $file) {
+        $randFileName = uniqid();
+        $extension = $file->getClientOriginalExtension(); //拡張子を抽出
+        $originalFileName = $randFileName . '.' . $extension;
+
+        $path = $file->storeAs('public/' . $originalFileName);
+
+        File::create([
+          'todo_id' => $update->id,
+          'original_file_name' => $originalFileName,
+          'path' => $path,
+        ]);
+      };
+    };
+
     $update->save();
 
     return to_route('todos.index');
   }
 
-  /**
-   * Remove the specified resource from storage.
-   */
+
   public function destroy(string $id)
   {
     Todo::findOrFail($id)
@@ -140,5 +160,29 @@ class TodoController extends Controller
     $deletedTodos = Todo::onlyTrashed()->get();
 
     return view('todos.dust-box', compact('deletedTodos'));
+  }
+
+  public function dustBoxClear(string $id)
+  {
+    $todo = Todo::onlyTrashed()->findOrFail($id);
+    $paths = $todo->files()->pluck('path');
+
+    foreach ($paths as $path) {
+      if (Storage::exists($path)) {
+        Storage::delete($path);
+      }
+    }
+
+    $todo = Todo::onlyTrashed()->findOrFail($id)->forceDelete();
+
+    return to_route('todos.dust-box');
+  }
+
+  public function restore($id)
+  {
+    $todo = Todo::onlyTrashed()->find($id);
+    $todo->restore();
+
+    return to_route('todos.dust-box');
   }
 }

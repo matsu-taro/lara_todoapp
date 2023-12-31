@@ -65,7 +65,7 @@
                 <form action="{{ route('todos.destroy', ['todo' => $my_todo->id]) }}" method="POST">
                   @csrf
                   @method('delete')
-                  <button class="text-blue-500">
+                  <button class="text-red-500">
                     削除する
                   </button>
                 </form>
@@ -74,6 +74,9 @@
           @endforeach
         </tbody>
       </table>
+      <div class="pagination">
+        {{ $my_todos->links() }}
+      </div>
     </div>
   </main>
 </x-app-layout>

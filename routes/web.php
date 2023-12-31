@@ -35,6 +35,10 @@ Route::prefix('todos')
             ->name('owner_index');
         Route::get('/dust-box', 'dustBox')
             ->name('dust-box');
+        Route::post('{todo}/destroy', 'dustBoxClear')
+            ->name('dust-box-clear');
+        Route::get('{todo}/restore', 'restore')
+            ->name('restore');
     });
 
 
