@@ -29,7 +29,7 @@
       <div class="todo--owner_name">
         <label for="new_owner_name" class="leading-7 text-md text-black-600">担当者</label><br>
         <input type="text" name="new_owner_name" placeholder="新しく追加する" value="{{ old('new_owner_name') }}"
-          class="w-1/6" style="border-radius: 4px; border:4px solid antiquewhite;">
+          class="w-1/6" >
       </div>
       <div class="todo--owner_name">
         <select name="owner_name" class="w-1/6">
