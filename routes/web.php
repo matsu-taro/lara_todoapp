@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('todos', TodoController::class)
     ->except('show');
 
@@ -39,6 +37,14 @@ Route::prefix('todos')
             ->name('dust-box-clear');
         Route::get('{todo}/restore', 'restore')
             ->name('restore');
+    });
+
+Route::prefix('files')
+    ->controller(FileController::class)
+    ->name('files.')
+    ->group(function () {
+        Route::get('{file}/destroy', 'destroy')
+            ->name('destroy');
     });
 
 

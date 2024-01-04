@@ -108,9 +108,9 @@ class TodoController extends Controller
     $todo = Todo::findOrFail($id);
     $users = User::all();
 
-    $files_name = $todo->files()->pluck('original_file_name');
+    $files = $todo->files;
 
-    return view('todos.edit', compact('todo', 'users', 'files_name'));
+    return view('todos.edit', compact('todo', 'users', 'files'));
   }
 
 
