@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
 class ValidatorServiceProvider extends ServiceProvider
 {
@@ -30,9 +31,16 @@ class ValidatorServiceProvider extends ServiceProvider
 
             if ($newOwnerName !== null && $ownerName !== '0') {
                 return false;
-            }            
+            }
 
             return true;
+        });
+
+        Validator::extend('same_owner_name_check', function ($attribute, $value, $parameters, $validator) {
+            $newOwnerName = $validator->getData()['new_owner_name'];
+            $existingOwner = User::where('name', $newOwnerName)->exists();
+
+            return !$existingOwner;
         });
     }
 }

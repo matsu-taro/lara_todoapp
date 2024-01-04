@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
             'title' => ['required', 'string'],
             'content' => ['required', 'string'],
             'new_owner_name' => 'nullable',
-            'owner_name'=>'owner_name_check',
+            'owner_name'=>['owner_name_check','same_owner_name_check'],
             'files' => 'nullable',
         ];
     }
@@ -35,7 +35,8 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'タイトルは必ず記入してください。',
             'content' => '内容は必ず記入してください。',
-            'owner_name_check' => '担当者は1人決めてください。'
+            'owner_name_check' => '担当者は1人決めてください。',
+            'same_owner_name_check' => '既にその名前の担当者がいる為、別の名前に変えてください。',
         ];
     }
 }

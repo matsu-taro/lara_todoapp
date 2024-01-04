@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         'created_at' => '2023/12/22 12:00:00'
       ],
       [
-        'name' => 'まつはし',
+        'name' => 'なかむら',
         'email' => 'a@a.com',
         'password' =>  Hash::make('ripslyme3080'),
         'created_at' => '2023/12/22 12:00:00'

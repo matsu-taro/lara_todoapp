@@ -21,20 +21,19 @@
       @method('put')
 
       <div class="todo--title">
-        <input type="text" name="title" placeholder="タイトル" value="{{ $todo->title }}"
-          style="border-radius: 4px; border:4px solid antiquewhite;">
+        <input type="text" name="title" placeholder="タイトル" value="{{ $todo->title }}">
       </div>
       <div class="todo--textarea">
         <textarea name="content" id="content" value="" cols="100%" rows="10" placeholder="内容を入力する">{{ $todo->content }}</textarea>
       </div>
 
       <div class="todo--owner_name">
-        <input type="hidden" name="new_owner_name" value="{{ old('new_owner_name') }}" class="w-1/6"
-          style="border-radius: 4px; border:4px solid antiquewhite;">
+        <input type="hidden" name="new_owner_name" value="{{ old('new_owner_name') }}" class="w-1/6">
         <label for="owner_name" class="leading-7 text-md text-black-600">担当者</label><br>
         <select name="owner_name" class="w-1/6">
           @foreach ($users as $user)
-            <option value="{{ $user->name }}" @if ($todo->user_id == $user->id) selected @endif>{{ $user->name }}
+            <option value="{{ $user->name }}" @if ($todo->user_id == $user->id) selected @endif>
+              {{ $user->name }}
             </option>
           @endforeach
         </select>

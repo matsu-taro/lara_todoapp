@@ -19,8 +19,7 @@
     <form action="{{ route('todos.store') }}" method="post" enctype="multipart/form-data">
       @csrf
       <div class="todo--title">
-        <input type="text" name="title" placeholder="タイトル" value="{{ old('title') }}"
-          style="border-radius: 4px; border:4px solid antiquewhite;">
+        <input type="text" name="title" placeholder="タイトル" value="{{ old('title') }}">
       </div>
       <div class="todo--textarea">
         <textarea name="content" id="content" value="" cols="100%" rows="10" placeholder="内容を入力する">{{ old('content') }}</textarea>

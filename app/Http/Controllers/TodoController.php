@@ -32,7 +32,6 @@ class TodoController extends Controller
 
   public function create()
   {
-    // $user = Auth::user();
     $users = User::all();
     return view('todos.create', compact('users'));
   }
@@ -116,32 +115,34 @@ class TodoController extends Controller
 
   public function update(StoreRequest $request, string $id)
   {
-    $update = Todo::find($id);
+    $update_todo = Todo::find($id);
+    $update_user = User::where('name', $request->owner_name)->first();
 
-    $update->title = $request->title;
-    $update->content = $request->content;
-    $update->owner_name = $request->owner_name;
-    $update->status = $request->status;
+    $update_todo->user_id = $update_user->id;
+    $update_todo->title = $request->title;
+    $update_todo->content = $request->content;
+    $update_todo->owner_name = $request->owner_name;
+    $update_todo->status = $request->status;
 
     if ($request->hasFile('files')) {
       $files = $request->file('files');
 
       foreach ($files as $file) {
         $randFileName = uniqid();
-        $extension = $file->getClientOriginalExtension(); //拡張子を抽出
+        $extension = $file->getClientOriginalExtension();
         $originalFileName = $randFileName . '.' . $extension;
 
         $path = $file->storeAs('public/' . $originalFileName);
 
         File::create([
-          'todo_id' => $update->id,
+          'todo_id' => $update_todo->id,
           'original_file_name' => $originalFileName,
           'path' => $path,
         ]);
       };
     };
 
-    $update->save();
+    $update_todo->save();
 
     return to_route('todos.index');
   }
